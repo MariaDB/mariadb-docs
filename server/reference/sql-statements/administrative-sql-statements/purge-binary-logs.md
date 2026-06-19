@@ -1,7 +1,7 @@
 ---
 description: >-
   Official PURGE BINARY LOGS syntax: delete binlogs using TO 'log_name' or
-  BEFORE datetime_expr, replica read constraints, and SHOW BINARY LOGS commands.
+  BEFORE datetime_expr, slave read constraints, and SHOW BINARY LOGS commands.
 ---
 
 # PURGE BINARY LOGS
@@ -21,7 +21,7 @@ The `PURGE BINARY LOGS` statement deletes all the [binary log](../../../server-m
 
 The datetime expression is in the format `YYYY-MM-DD hh:mm:ss`.
 
-If a replica is active but has yet to read from a binary log file you attempt to delete, the statement will fail with an error. However, if the replica is not connected and has yet to read from a log file you delete, the file will be deleted, but the replica will be unable to continue replicating once it connects again.
+If a slave is active but has yet to read from a binary log file you attempt to delete, the statement will fail with an error. However, if the slave is not connected and has yet to read from a log file you delete, the file will be deleted, but the slave will be unable to continue replicating once it connects again.
 
 From [MariaDB 11.4.3](https://jira.mariadb.org/browse/MDEV-34504), `PURGE BINARY LOGS` ignores [slave\_connections\_needed\_for\_purge](../../../ha-and-performance/standard-replication/replication-and-binary-log-system-variables.md#slave_connections_needed_for_purge), the minimum number of connected replicas that [automatic purging](../../../server-management/server-monitoring-logs/binary-log/using-and-maintaining-the-binary-log.md#purging-log-files) requires. In MariaDB 11.4.1 and 11.4.2, `PURGE BINARY LOGS BEFORE` observed that limit while `PURGE BINARY LOGS TO` did not.
 
@@ -33,7 +33,7 @@ This statement has no effect if the server was not started with the [--log-bin](
 
 {% tabs %}
 {% tab title="Current" %}
-To list the binary log files on the server, use [SHOW BINARY LOGS](show/show-binary-logs.md). To see which files they are reading, use [SHOW REPLICA STATUS](show/show-replica-status.md). You can only delete the files that are older than the oldest file that is used by the slaves.
+To list the binary log files on the server, use [SHOW BINARY LOGS](show/show-binary-logs.md). To see which files they are reading, use [SHOW SLAVE STATUS](show/show-replica-status.md). You can only delete the files that are older than the oldest file that is used by the slaves.
 {% endtab %}
 
 {% tab title="< 10.5.1" %}
